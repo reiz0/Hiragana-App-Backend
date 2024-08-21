@@ -4,7 +4,7 @@
   "description": "��#\u0000 \u0000H\u0000i\u0000r\u0000a\u0000g\u0000a\u0000n\u0000a\u0000-\u0000A\u0000p\u0000p\u0000-\u0000B\u0000a\u0000c\u0000k\u0000e\u0000n\u0000d\u0000\r\u0000 \u0000",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": " tsnd -- src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "@types/node": "^22.4.1",
     "bcrypt": "^5.1.1",
     "cookie-session": "^2.1.0",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.5.3",
     "nodemon": "^3.1.4",

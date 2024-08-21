@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import mongoose from "mongoose";
 import { UserRouter } from "./routes/users.routes";
+import "dotenv/config";
 
 const uri = process.env.MONGO_URI;
 
