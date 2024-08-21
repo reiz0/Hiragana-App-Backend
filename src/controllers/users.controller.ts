@@ -20,10 +20,11 @@ export const getUsersById = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { accountName, password } = req.body;
   try {
     // check if the user exists
-    const user = await UserModel.findOne({ email }).lean().exec();
+    const user = await UserModel.findOne({ accountName }).lean().exec();
+    if (!user) return res.status(400).send("This Account Name Doesn't exists");
 
     if (user) {
       //check if password matches

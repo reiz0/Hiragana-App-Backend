@@ -1,4 +1,4 @@
-import { model, Model, Schema } from "mongoose";
+import { Model, Schema, model } from "mongoose";
 import { UserType } from "../types/user";
 
 type UserModelType = Model<UserType>;
@@ -20,7 +20,7 @@ const UserSchema = new Schema<UserType, UserModelType>(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const UserModel = model<UserType, UserModelType>("User", UserSchema);
