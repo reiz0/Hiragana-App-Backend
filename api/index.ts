@@ -12,6 +12,7 @@ const server = createServer(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
 app.use("/user", UserRouter);
 
 if (uri) {
@@ -20,6 +21,10 @@ if (uri) {
   });
 }
 
+
+
 server.listen(process.env.PORT, () =>
   console.log(`[Server]: http://${process.env.HOST}:${process.env.PORT}`)
 );
+
+module.exports = app;
