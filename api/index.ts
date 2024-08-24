@@ -1,8 +1,8 @@
 import express from "express";
 // import { createServer } from "http";
+import "dotenv/config";
 import mongoose from "mongoose";
 import { UserRouter } from "./routes/users.routes";
-import "dotenv/config";
 
 const uri = process.env.MONGO_URI;
 
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/user", UserRouter);
-app.get("/", (req, res) => res.redirect("/user/66c557fb7218ac869ac8d252"));
+app.get("/", (req, res) => res.send("Express on Vercel"));
 
 if (uri) {
   mongoose.connect(uri).catch((reason) => {
@@ -21,8 +21,7 @@ if (uri) {
   });
 }
 
-
-app.listen(3000, () => console.log("Server ready on port 3000."));
+app.listen(4000, () => console.log("Server ready on port 3000."));
 
 // server.listen(process.env.PORT, () =>
 //   console.log(`[Server]: http://${process.env.HOST}:${process.env.PORT}`)
