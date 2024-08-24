@@ -12,8 +12,8 @@ const server = createServer(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => res.send("Express on Vercel"));
 app.use("/user", UserRouter);
+app.get("/", (req, res) => res.redirect("/user/66c557fb7218ac869ac8d252"));
 
 if (uri) {
   mongoose.connect(uri).catch((reason) => {
