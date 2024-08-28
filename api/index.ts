@@ -1,5 +1,6 @@
 import express from "express";
 // import { createServer } from "http";
+import cors from "cors"
 import "dotenv/config";
 import mongoose from "mongoose";
 import { UserRouter } from "./routes/users.routes";
@@ -8,6 +9,7 @@ const uri = process.env.MONGO_URI;
 
 const app = express();
 // const server = createServer(app);
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
