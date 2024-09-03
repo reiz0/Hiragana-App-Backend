@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 
 export type QuizType = {
-  levels: number;
-  maxScore: number;
+  level: number;
+  score: number;
   user: Schema.Types.ObjectId
 }
