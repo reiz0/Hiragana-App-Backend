@@ -1,8 +1,9 @@
 import express from "express";
 // import { createServer } from "http";
-import cors from "cors"
+import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
+import { QuizRouter } from "./routes/quiz.routes";
 import { UserRouter } from "./routes/users.routes";
 
 const uri = process.env.MONGO_URI;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/user", UserRouter);
+app.use("/quiz", QuizRouter);
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
 if (uri) {
