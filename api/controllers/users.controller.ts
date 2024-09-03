@@ -47,7 +47,7 @@ export const register = async (req: Request, res: Response) => {
   const { userName, accountName, password } = req.body;
 
   try {
-    let existUser = await UserModel.findOne({ accountName });
+    const existUser = await UserModel.findOne({ accountName });
     if (existUser) return res.status(400).send("This Account Name already exists");
 
     const hashedPassword = await bcrypt.hash(password, 10);
