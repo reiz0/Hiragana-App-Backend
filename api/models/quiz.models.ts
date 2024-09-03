@@ -5,16 +5,17 @@ type QuizModelType = Model<QuizType>;
 
 const QuizSchema = new Schema<QuizType, QuizModelType>(
   {
-    levels: {
+    level: {
       type: Number,
       required: true,
     },
-    maxScore: {
+    score: {
       type: Number,
       required: true,
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: Schema.ObjectId,
+      ref: 'User',
       required: true,
     },
   },
