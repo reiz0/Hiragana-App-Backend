@@ -37,7 +37,7 @@ export async function storeNewScore(req: Request, res: Response) {
 
     const updateUserScore = await UserModel.findByIdAndUpdate(existUser._id, {$push: {hiraganaScore: [newScore._id]}}, {runValidator: true, new: true})
 
-    res.status(201).json(updateUserScore);
+    res.status(201).json(updateUserScore?.hiraganaScore);
   } catch (error) {
     res.status(500).json({ error });
   }
