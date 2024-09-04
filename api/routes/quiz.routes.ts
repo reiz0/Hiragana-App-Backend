@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { getMaxScore } from "../controllers/quiz.controllers";
+import { getMaxScore, storeNewScore } from "../controllers/quiz.controllers";
 
 export const QuizRouter = Router();
 
 QuizRouter.post("/getMaxScore", getMaxScore);
+QuizRouter.post("/storeNewScore", storeNewScore);
