@@ -1,15 +1,32 @@
 import { Request, Response } from "express";
 import { QuizModel } from "../models/quiz.models";
 import { UserModel } from "../models/user.models";
+import { AccountScoresType, ScoreType } from "../types/user";
 
-export async function getMaxScore(req: Request, res: Response) {
-  const { level, accountName } = req.body;
+export async function getAllMaxScore(req: Request, res: Response) {
+  const { accountName } = req.body;
   try {
-    const accountScores = await UserModel.findOne({ accountName }).populate({
-      path: "hiraganaScore",
-      match: { level },
-      select: "score",
-    });
+    const accountScores: AccountScoresType | null = await UserModel.findOne({ accountName })
+      .populate({
+        path: "hiraganaScore",
+        select: "level score",
+      })
+      .select("hiraganaScore");
+
+    const scores: ScoreType[] = [];
+
+    if (!accountScores) {
+      res.status(400).send("there is no scores in this account");
+    } else {
+      accountScores.hiraganaScore.forEach((e) => {
+        let isNoScoer = true;
+        scores.forEach((score) => {
+          score.level === e.level && (isNoScoer = false);
+          !isNoScoer && score.maxScore < e.score && (score.maxScore = e.score);
+        });
+        isNoScoer && scores.push({ level: e.level, maxScore: e.score });
+      });
+    }
 
     // const scoresArray = []
     // accountScores.forEach(element => {
@@ -18,7 +35,7 @@ export async function getMaxScore(req: Request, res: Response) {
 
     // const maxScore = accountScores.reduce()
 
-    res.status(201).json(accountScores);
+    res.status(201).json(scores);
   } catch {}
 }
 
@@ -35,7 +52,11 @@ export async function storeNewScore(req: Request, res: Response) {
       user: existUser._id,
     });
 
-    const updateUserScore = await UserModel.findByIdAndUpdate(existUser._id, {$push: {hiraganaScore: [newScore._id]}}, {runValidator: true, new: true})
+    const updateUserScore = await UserModel.findByIdAndUpdate(
+      existUser._id,
+      { $push: { hiraganaScore: [newScore._id] } },
+      { runValidator: true, new: true }
+    );
 
     res.status(201).json(updateUserScore?.hiraganaScore);
   } catch (error) {
