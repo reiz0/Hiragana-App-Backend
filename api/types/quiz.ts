@@ -5,4 +5,5 @@ export type QuizType = {
   score: number;
   user: Schema.Types.ObjectId;
   isMaxScore: boolean;
+  quiz: string;
 };

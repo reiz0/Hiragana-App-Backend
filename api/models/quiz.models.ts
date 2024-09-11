@@ -21,6 +21,10 @@ const QuizSchema = new Schema<QuizType, QuizModelType>(
     isMaxScore: {
       type: Boolean,
       required: true
+    },
+    quiz: {
+      type: String,
+      required: true
     }
   },
   { timestamps: true, versionKey: false }
