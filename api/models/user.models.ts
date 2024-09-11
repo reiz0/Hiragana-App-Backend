@@ -19,10 +19,6 @@ const UserSchema = new Schema<UserType, UserModelType>(
       type: String,
       required: true,
     },
-    hiraganaScore: {
-      type: [Schema.ObjectId],
-      ref: 'Quiz',
-    },
   },
   { timestamps: true, versionKey: false }
 );

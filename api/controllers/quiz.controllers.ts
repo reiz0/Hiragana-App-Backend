@@ -1,36 +1,18 @@
 import { Request, Response } from "express";
 import { QuizModel } from "../models/quiz.models";
 import { UserModel } from "../models/user.models";
-import { AccountScoresType, ScoreType } from "../types/user";
+import { QuizType } from "../types/quiz";
 
 export async function getAllMaxScore(req: Request, res: Response) {
-  const { accountName } = req.body;
+  const { user } = req.body;
   try {
-    const accountScores: AccountScoresType | null = await UserModel.findOne({
-      accountName,
-    })
-      .populate({
-        path: "hiraganaScore",
-        select: "level score",
-      })
-      .select("hiraganaScore");
+    const existMaxScores: QuizType[] = await QuizModel.find({ user, isMaxScore: true }).select("level score createdAt").sort({level: 1});
 
-    const scores: ScoreType[] = [];
-
-    if (!accountScores) {
+    if (!existMaxScores) {
       res.status(400).send("there is no scores in this account");
-    } else {
-      accountScores.hiraganaScore.forEach((e) => {
-        let isNoScoer = true;
-        scores.forEach((score) => {
-          score.level === e.level && (isNoScoer = false);
-          !isNoScoer && score.maxScore < e.score && (score.maxScore = e.score);
-        });
-        isNoScoer && scores.push({ level: e.level, maxScore: e.score });
-      });
     }
 
-    res.status(201).json(scores);
+    res.status(201).json(existMaxScores);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -51,22 +33,22 @@ export async function storeNewScore(req: Request, res: Response) {
 
     let isMaxScoreBoolean = false;
 
-    if (isThereMaxScore){
-      if(isThereMaxScore.length === 1) {
-      if (isThereMaxScore[0].score < score){
-        await QuizModel.findByIdAndUpdate(
-          isThereMaxScore[0]._id,
-          { isMaxScore: false },
-          { runValidator: true, new: true }
-        );
+    if (isThereMaxScore) {
+      if (isThereMaxScore.length === 1) {
+        if (isThereMaxScore[0].score < score) {
+          await QuizModel.findByIdAndUpdate(
+            isThereMaxScore[0]._id,
+            { isMaxScore: false },
+            { runValidator: true, new: true }
+          );
+          isMaxScoreBoolean = true;
+        }
+      } else if (isThereMaxScore.length === 0) {
         isMaxScoreBoolean = true;
+      } else {
+        return res.status(400).send("Too Many Max Score");
       }
-    } else if (isThereMaxScore.length === 0){
-      (isMaxScoreBoolean = true);
-    } else {
-      return res.status(400).send("Too Many Max Score");
     }
-  }
 
     const newScore = await QuizModel.create({
       level,
