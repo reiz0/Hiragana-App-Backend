@@ -19,7 +19,7 @@ export async function getAllMaxScore(req: Request, res: Response) {
 }
 
 export async function storeNewScore(req: Request, res: Response) {
-  const { level, user, score } = req.body;
+  const { level, user, score, quiz } = req.body;
   try {
     const existUser = await UserModel.findOne({ _id: user });
 
@@ -29,6 +29,7 @@ export async function storeNewScore(req: Request, res: Response) {
       user,
       level,
       isMaxScore: true,
+      quiz
     });
 
     let isMaxScoreBoolean = false;
@@ -55,13 +56,8 @@ export async function storeNewScore(req: Request, res: Response) {
       score,
       user: existUser._id,
       isMaxScore: isMaxScoreBoolean,
+      quiz
     });
-
-    const updateUserScore = await UserModel.findByIdAndUpdate(
-      existUser._id,
-      { $push: { hiraganaScore: [newScore._id] } },
-      { runValidator: true, new: true }
-    );
 
     res.status(201).json(newScore);
   } catch (error) {
